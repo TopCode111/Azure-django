@@ -1,0 +1,1188 @@
+openapi: 3.0.0
+info:
+  title: Learning Backend
+  description: Learning Backend
+  contact:
+    email: jstary80@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/NeurEd/Learning/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:8000
+  description: AWS Instance
+tags:
+- name: tasks
+  description: CRUD around tasks
+- name: notebooks
+  description: Interaction between notebooks and learners
+- name: graph
+  description: Graph interactions
+- name: tokens
+  description: Auth endpoints for various applications
+- name: mock
+  description: Mocks data / produces jsons / objects within the system
+- name: signals
+  description: empty endpoint for signal processing
+- name: aggregations
+  description: Aggregates values for underlying details
+paths:
+  /signals:
+    post:
+      tags:
+      - signals
+      summary: ADMIN - get signals from various endpoints
+      description: |
+        get signals from various endpoints to collect biosensoric feedback
+      operationId: signals_post
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+      x-openapi-router-controller: swagger_server.controllers.signals_controller
+  /mock/kquant_json:
+    get:
+      tags:
+      - mock
+      summary: ADMIN - get kquant json
+      description: |
+        Redirects the user to a new template in which he can create a new notebook
+      operationId: mock_kquant_json_get
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+      x-openapi-router-controller: swagger_server.controllers.mock_controller
+  /mock/user_json:
+    get:
+      tags:
+      - mock
+      summary: ADMIN  - get user object
+      description: |
+        Redirects the user to a new template in which he can create a new notebook
+      operationId: mock_user_json_get
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+      x-openapi-router-controller: swagger_server.controllers.mock_controller
+  /aggregations/{type}/{cid}/users/{sid}:
+    get:
+      tags:
+      - aggregations
+      summary: INSIGHT - Aggregates KQ for user
+      description: |
+        Aggregates KQ for user
+      operationId: aggregations_type_cid_users_sid_get
+      parameters:
+      - name: type
+        in: path
+        description: kq / user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: cid
+        in: path
+        description: cell id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sid
+        in: path
+        description: user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.aggregations_controller
+    post:
+      tags:
+      - aggregations
+      summary: ADMIN - Aggregates KQ for user
+      description: |
+        Aggregates KQ for user
+      operationId: aggregations_type_cid_users_sid_post
+      parameters:
+      - name: type
+        in: path
+        description: kq / user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: cid
+        in: path
+        description: cell id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sid
+        in: path
+        description: user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.aggregations_controller
+  /aggregations/{type}/{kid}/users/{sid}:
+    get:
+      tags:
+      - aggregations
+      summary: INSIGHT- Aggregates KQ for user
+      description: |
+        Aggregates KQ for user
+      operationId: aggregations_type_kid_users_sid_get
+      parameters:
+      - name: type
+        in: path
+        description: kq / user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: kid
+        in: path
+        description: knowledge id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sid
+        in: path
+        description: user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.aggregations_controller
+    post:
+      tags:
+      - aggregations
+      summary: ADMIN - Aggregates KQ for user
+      description: |
+        Aggregates KQ for user
+      operationId: aggregations_type_kid_users_sid_post
+      parameters:
+      - name: type
+        in: path
+        description: kq / user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: kid
+        in: path
+        description: knowledge id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sid
+        in: path
+        description: user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.aggregations_controller
+  /aggregations/{type}/{cid}:
+    get:
+      tags:
+      - aggregations
+      summary: INSIGHT Aggregates Knowledge node for user
+      description: |
+        Aggregates Knowledge node for user
+      operationId: aggregations_type_cid_get
+      parameters:
+      - name: type
+        in: path
+        description: kq / user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: cid
+        in: path
+        description: cell id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sid
+        in: path
+        description: user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.aggregations_controller
+    post:
+      tags:
+      - aggregations
+      summary: ADMIN - Aggregates Knowledge node for user
+      description: |
+        Aggregates Knowledge node for user
+      operationId: aggregations_type_cid_post
+      parameters:
+      - name: type
+        in: path
+        description: kq / user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: cid
+        in: path
+        description: cell id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sid
+        in: path
+        description: user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.aggregations_controller
+  /notebooks:
+    put:
+      tags:
+      - notebooks
+      summary: EDUCATOR - spwan new template
+      description: |
+        Spawns new Notebook from template
+      operationId: notebooks_put
+      responses:
+        200:
+          description: URL for redirect to new template (id empty / value contains
+            URL)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.notebooks_controller
+  /notebooks/{gid}:
+    get:
+      tags:
+      - notebooks
+      summary: LEARNER - gets notebook from gdrive as json
+      description: |
+        Get Notebook from Gdrive as JSON
+      operationId: notebooks_gid_get
+      parameters:
+      - name: gid
+        in: path
+        description: google docs id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: gid / filename (including path) for downloaded file
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.notebooks_controller
+  /notebooks/{nid}:
+    post:
+      tags:
+      - notebooks
+      summary: ADMIN - tracks user interaction with notebooks
+      description: |
+        Tracks user interaction with notebook by observing notebook changes - requires GDrive hook implementation to get informed about changes
+      operationId: notebooks_nid_post
+      parameters:
+      - name: nid
+        in: path
+        description: google docs id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: id of the request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.notebooks_controller
+  /notebooks/users/{sid}:
+    get:
+      tags:
+      - notebooks
+      summary: LEARNER - Returns a list of generated notebooks by user
+      description: |
+        Overview of all notebooks that a specific user worked on, desc order
+      operationId: notebooks_users_sid_get
+      parameters:
+      - name: sid
+        in: path
+        description: session / user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: URL for redirect to new template (id empty / value contains
+            URL)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameTsReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.notebooks_controller
+  /notebooks/{nid}/users/{sid}:
+    get:
+      tags:
+      - notebooks
+      summary: LEARNER - gets google doc id from database
+      description: |
+        Gets Google doc id from database
+      operationId: notebooks_nid_users_sid_get
+      parameters:
+      - name: nid
+        in: path
+        description: notebook id (according to graph)
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sid
+        in: path
+        description: session / user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: URL for redirect to new template (id empty / value contains
+            URL)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameTsReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.notebooks_controller
+  /tasks/{nid}:
+    get:
+      tags:
+      - tasks
+      summary: LEARNER - creates static notebook from tasks
+      description: |
+        Generates static notebook from prestored tasks - as for now, we regenerate full notebooks as they have been stored in the database / later on we might be able to split them into seperate tasks
+      operationId: tasks_nid_get
+      parameters:
+      - name: nid
+        in: path
+        description: notebook id as stored in DB
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 4aff4225-99d5-4c05-84aa-dff19474ba86
+      - name: sid
+        in: path
+        description: session / user id on the backend
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: google docs id of request (gid / generated nid)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameReturn'
+                x-content-type: application/json
+        422:
+          description: Validation incorrect - not persisted
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something else went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tasks_controller
+  /tasks/{gid}:
+    post:
+      tags:
+      - tasks
+      summary: EDUCATOR - validates and creates new tasks from submitted nb
+      description: "- downloads notebook which was saved from template - validates notebook - persists changes to postgres / graph"
+      operationId: tasks_gid_post
+      parameters:
+      - name: gid
+        in: path
+        description: notebook that was generated from template has to be downloaded
+          after it was saved
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 1XeXHNr2GbiD8IP2O_pqsF9iMNPmbhEPG
+      - name: sid
+        in: path
+        description: session / user id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful persist / list of persisted cid´s
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tasks_controller
+  /tasks:
+    post:
+      tags:
+      - tasks
+      summary: LEARNER - user submitted cell - result validation
+      description: |
+        user submitted cell, result validation
+      operationId: tasks_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitResult'
+        required: true
+      responses:
+        200:
+          description: Receives submit request and does a result validation on that
+            request - Writes results to DB and responds to user
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Correct answer Jay!
+                x-content-type: text/plain
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tasks_controller
+  /tasks/rating/{cid}:
+    post:
+      tags:
+      - tasks
+      summary: LEARNER - rate task by cid
+      description: Allows the user to rate whatever content / cid he just worked on
+      operationId: tasks_rating_cid_post
+      parameters:
+      - name: cid
+        in: path
+        description: cell id of taks
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful rating
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tasks_controller
+  /tasks/{cid}:
+    delete:
+      tags:
+      - tasks
+      summary: EDUCATOR - deletes task by id
+      description: |
+        allows to delete a previously submitted task
+      operationId: tasks_cid_delete
+      parameters:
+      - name: cid
+        in: path
+        description: cell id of taks
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful retrival / empty list when no result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tasks_controller
+    patch:
+      tags:
+      - tasks
+      summary: EDUCATOR - edit task by id
+      description: |
+        allows to edit / overwrite a previously submitted task
+      operationId: tasks_cid_patch
+      parameters:
+      - name: cid
+        in: path
+        description: cell id of taks
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful retrival /empty list when no result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: something went wrong
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tasks_controller
+  /authenticategdrive:
+    get:
+      tags:
+      - tokens
+      summary:  LEARNER - auth token for shared gdrive folder
+      description: |
+        Using the Gdrive API we need to authenticate our users (and storing the token locally) against their API
+      operationId: authenticategdrive_get
+      responses:
+        200:
+          description: OK
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tokens_controller
+  /authenticate:
+    post:
+      tags:
+      - tokens
+      summary: EVERYONE - auth token for user
+      description: |
+        Handles all authentication requirements (Signup / Login / Password restore) - Based on Azure AD B2C including Google Login
+      operationId: authenticate_post
+      requestBody:
+        description: username / pass for auth
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        200:
+          description: OK
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.tokens_controller
+  /pathfinders:
+    get:
+      tags:
+      - graph
+      summary: EDUCATOR - Retrieves final (end) nodes of skeleton
+      description: |
+        if we have an existing content node it allows us to create a relation to other skeleton nodes where a relationship might exist, for that we first need to grab potential final nodes
+      operationId: pathfinders_get
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.graph_controller
+  /pathfinders/down/{kid}:
+    get:
+      tags:
+      - graph
+      summary: EDUCATOR - provides downward navigation on graph (adjecent)
+      description: |
+        provides downward navigation on graph (adjecent) from current node and return a dictionary of all elements of relevance
+      operationId: pathfinders_down_kid_get
+      parameters:
+      - name: kid
+        in: path
+        description: id of currently selected skeleton node
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dd5522a4-c2b3-4fce-bdf9-4d191838d5e1
+      responses:
+        200:
+          description: returns id/name of adjacent node(s) - * indicates end node
+            in skeleton
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.graph_controller
+  /pathfinders/up/{kid}:
+    get:
+      tags:
+      - graph
+      summary: EDUCATOR - provides upward navigation on graph
+      description: |
+        provides upward navigation on graph (adjecent) from current node
+      operationId: pathfinders_up_kid_get
+      parameters:
+      - name: kid
+        in: path
+        description: id of currently selected node
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 4bd7396b-67e4-40c8-ac6f-2696ce582974
+      responses:
+        200:
+          description: returns id/name of adjacent node(s)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdNameReturn'
+                x-content-type: application/json
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.graph_controller
+  /pathfinders/relations:
+    post:
+      tags:
+      - graph
+      summary: ADMIN - checks if realtion exists
+      description: |
+        Allows to check if a relation anywhere on the graph exists
+      operationId: pathfinders_relations_post
+      requestBody:
+        description: Parameters to check if a relation exists
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Multirelation'
+        required: true
+      responses:
+        200:
+          description: relation does not exist
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        409:
+          description: relation exists
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.graph_controller
+  /pathfinders/relations/multirelation:
+    post:
+      tags:
+      - graph
+      summary: EDUCATOR - 1:m connection for content -> skeleton nodes
+      description: |
+        create a 1:m connection from content -> scaffold node
+      operationId: pathfinders_relations_multirelation_post
+      requestBody:
+        description: Parameters to connect content to skeleton node
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Multirelation'
+        required: true
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          description: bad input parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.graph_controller
+components:
+  securitySchemes:
+    bearerAuth:           
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  schemas:
+    Error:
+      required:
+      - eid
+      - error
+      - timestamp
+      type: object
+      properties:
+        error:
+          type: string
+          example: this is an error
+        timestamp:
+          type: string
+          example: formatted timestamp
+        eid:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+    IdReturn:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+      example:
+        id: id
+    IdNameReturn:
+      required:
+      - id
+      - value
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+      example:
+        id: id
+        value: value
+    IdNameTsReturn:
+      required:
+      - id
+      - ts
+      - value
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+        ts:
+          type: string
+      example:
+        id: id
+        value: value
+        ts: ts
+    Multirelation:
+      required:
+      - a_desc
+      - a_id
+      - b_desc
+      - b_id
+      - weight
+      type: object
+      properties:
+        a_id:
+          type: string
+          example: 39ce57c3-34e3-4ac8-bbe5-9d6c2590b806
+        a_desc:
+          type: string
+          example: PROBLEM_SET
+        b_id:
+          type: string
+          example: e44197d8-d11e-4de4-88b8-4467949d805e
+        b_desc:
+          type: string
+          example: SUBJECT_DETAIL
+        weight:
+          maximum: 100.0
+          minimum: 1
+          type: integer
+          example: 40
+    Auth:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    SubmitResult:
+      required:
+      - cid
+      - result
+      - sid
+      type: object
+      properties:
+        sid:
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+        cid:
+          type: string
+          example: 0b98d7bc-1779-45be-8768-aab2a7b0dc5c
+        result:
+          type: string
+          example: "0.2"
+security:
+  - bearerAuth: []

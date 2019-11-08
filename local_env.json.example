@@ -1,0 +1,9 @@
+{
+    "DJANGO_SECRET_KEY": "YOUR_SECRET_KEY<DONT COPY THIS>",
+    "DATABASE_NAME": "your database_name",
+    "DATABASE_USER": "database_user",
+    "DATABASE_PW": "database_password",
+    "DATABASE_HOST": "your dbhost_url",
+
+    "DSN": "your sentry_domain"
+}

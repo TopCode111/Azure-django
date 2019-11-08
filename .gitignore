@@ -1,0 +1,14 @@
+.venv
+.vscode
+config/__pycache__
+local_env.json
+config/settings/__pycache__
+api_backend/__pycache__
+api_backend/apps/__pycache__
+api_backend/apps/account/__pycache__
+api_backend/apps/kqclass/__pycache__
+api_backend/apps/userclass/__pycache__
+dev_env.json
+api_backend/core/__pycache__
+api_backend/apps/apis/__pycache__
+api_backend/apps/apis/migrations/__pycache__
