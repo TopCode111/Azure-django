@@ -7,37 +7,61 @@ from os import environ, path
 from django.core.exceptions import ImproperlyConfigured
 from sentry_sdk.integrations.django import DjangoIntegration
 from .base import *
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 
 
 CURRENT_ENVIRONMENT = 'local'
 
-ENV_FILE = path.join(path.dirname(BASE_DIR), 'local_env.json')
-if not path.exists(ENV_FILE):
-    raise ImproperlyConfigured("No local environment file was found in\
-        directory: {0}".format(BASE_DIR))
-with open(ENV_FILE) as data_file:
-    ENV_JSON = json.load(data_file)
+SECRET_LIST = {}
 
-if not ENV_JSON:
-    raise ImproperlyConfigured("No environment variables were found")
+try:
+    credential = DefaultAzureCredential()
+    client = SecretClient(vault_url="https://learning2.vault.azure.net/", credential=credential)
+    
+    SECRET_LIST['django-secret'] = client.get_secret('django-secret').value
+    SECRET_LIST['sentry-key'] = client.get_secret('sentry-key').value
+    SECRET_LIST['postgres-user'] = client.get_secret('postgres-user').value
+    SECRET_LIST['postgres-key'] = client.get_secret('postgres-pass').value
+    SECRET_LIST['postgres-host'] = client.get_secret('postgres-host').value
+    SECRET_LIST['postgres-name'] = client.get_secret('postgres-name').value
+    SECRET_LIST['gremlin-key'] = client.get_secret('gremlin-pass').value
+    SECRET_LIST['gremlin-user'] = client.get_secret('gremlin-username').value
+
+    print(DEBUG)
+  
+except Exception as e:
+    raise ImproperlyConfigured("KeyVault issue")
+
+def _before_send(event,hint):
+    if DEBUG is True:
+        print(event)
+        return None
+    else:
+        return event
+  
+
+sentry_sdk.init(
+    dsn=SECRET_LIST['sentry-key'],
+    integrations=[DjangoIntegration()],
+    attach_stacktrace=True
+)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ENV_JSON.get('DJANGO_SECRET_KEY', None)
+SECRET_KEY = SECRET_LIST['django-secret']
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 CORE_ORIGIN_WHITELIST = ["*"]
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': ENV_JSON.get('DATABASE_NAME'),
-        'USER': ENV_JSON.get('DATABASE_USER'),
-        'PASSWORD': ENV_JSON.get('DATABASE_PW'),
-        'HOST': ENV_JSON.get('DATABASE_HOST'),
-        'PORT': '5432',
+        'NAME': SECRET_LIST['postgres-name'],
+        'USER': SECRET_LIST['postgres-user'],
+        'PASSWORD': SECRET_LIST['postgres-key'],
+        'HOST': SECRET_LIST['postgres-host'],
+        'PORT': '5432'
     }
 }
 
-sentry_sdk.init(
-    dsn=ENV_JSON.get('DSN'),
-    integrations=[DjangoIntegration()]
-)
+

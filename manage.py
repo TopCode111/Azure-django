@@ -2,7 +2,11 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from api_backend.apps.connections import gremlin
+import json
+from api_backend.apps.dbs import gremlin
+
+
+
 
 
 def main():
@@ -16,10 +20,16 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+    
+
 
 
 if __name__ == '__main__':
+    '''path = "static/misc_files/add_single_vertice_edge.json"
+    data = None
+    with open(path, "r") as read_file:
+        data = json.load(read_file)
     g = gremlin.GremlinData()
-    g.attach_data_to_graph("static/misc_files/scaffold_extract.json")
-    #main()
-
+    g.attach_content_to_graph()
+    '''
+    main()

@@ -1,0 +1,18 @@
+{
+    "content": [
+        {
+      "level": "l0",
+      "subject": "00000000-0000-0000-0000-000000000000",
+      "id": "0",
+      "name": "day1"
+        },
+      {
+        "level": "l0",
+        "subject": "00000000-0000-0000-0000-000000000000",
+        "id": "1",
+        "name": "day2",
+        "final_node": 1,
+        "relations": {"part_of":"0", "belongs_to":"1"}
+      }
+    ]
+}

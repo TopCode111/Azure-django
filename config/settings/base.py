@@ -4,6 +4,8 @@ Base settings for learning_azure project.
 
 import os
 import datetime
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -13,8 +15,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url="https://learning2.vault.azure.net/", credential=credential)
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2s65kpw+=4vgd=@u&o1=#v8%tu8em-(tcr24z05n*1g)7w5f01'
+SECRET_KEY = client.get_secret('django-secret').value
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

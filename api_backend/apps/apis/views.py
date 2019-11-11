@@ -5,10 +5,12 @@ from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework import viewsets, views
 from rest_framework import permissions
+from sentry_sdk import capture_exception
 
 from .models import KqJsons, KqClone, SessionDetails, GDTemplateTracker
 from ..account.serializers import CurrentUserSerializer
 from . import serializers as s
+from django.conf import settings
 
 
 class NotebooksViewSet(viewsets.ViewSet):
@@ -22,6 +24,10 @@ class NotebooksViewSet(viewsets.ViewSet):
         """
         Put code for "POST: /notebooks" endpoint here.
         """
+        print(settings.SECRET_LIST['postgres-user'])
+        print(settings.SECRET_LIST['postgres-key'])
+        print(settings.SECRET_LIST['postgres-host'])
+        print(settings.SECRET_LIST['postgres-name'])
         response = {'msg': "Please return your response for this endpoint."}
         return Response(response, status=status.HTTP_201_CREATED)
     

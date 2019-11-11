@@ -1,4 +1,4 @@
-# learning_azure
+#learning_azure
 ## Development
 ### Pre-requisites
 - PostgreSQL
@@ -26,16 +26,20 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Configure Environment Variables
+Environment Variables in KeyVault
 ```
-cp local_env.json.example local_env.json
+We store all environment variables in Azure KeyVault and reference them in code (see dev.py)
+KeyVault Ressource: learning2
 
-If you are going to use remote_db, then
-cp local_env .json.example dev_env.json
+export AZURE_CLIENT_ID="2bf7f0fd-d2b4-4b34-83fd-59268adf07a9"
 
-Then edit the local_env.json with your environment variables.
-Note: Please sign up into [link](https://sentry.io/signup/?platform=django) and
-    then create django_app in there, then you can get dsn(ex: https://60a3d6ba0e4b42d39da0b724d55fe727@sentry.io/1807534).
+export AZURE_CLIENT_SECRET="Request it from jay"
+
+export AZURE_TENANT_ID="78b03b78-f223-44e6-aa1d-7af413d79685"
+
+Install the relevant packages for Azure from requirements.txt
+If everything is set up correctly credential = DefaultAzureCredential() accesses the required credentials
+
 ```
 
 Run
@@ -54,5 +58,21 @@ http://127.0.0.1:8000/admin
 Then go to following url to see swagger-doc for api endpoints.
 http://127.0.0.1:8000/api/doc
 
-Note: You can take a look at your dsn[link](ex: https://60a3d6ba0e4b42d39da0b724d55fe727@sentry.io/1807534) 
-on your browser in other to check logs and erros.
+### Sentry Logging
+Documentation: https://docs.sentry.io/platforms/python/#integrating-the-sdk
+Configured DSN through KeyVault https://9e7e239c5f4841cfaa2416fbffed41ef@sentry.io/1808837
+Has to be configured in detail and integrated
+
+Sentry captures all non-treated errors in middleware style
+To capture individual events:
+```
+from sentry_sdk import capture_exception
+from django.conf import settings
+
+except Exception as e:
+    capture_exception(e)
+
+```
+### Misc Considerations
+Azure Postgres requires to have an IP in the firewall configured, otherwise the application will not run!
+

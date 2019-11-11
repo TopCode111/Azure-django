@@ -7,7 +7,7 @@
       "name": "test1",
       "final_node": 0,
       "belongs_to": [1,2],
-      "relationship_name": "belongs_too"
+      "relationship_name": "belongs_to"
         },
       {
       "level": "l1",
