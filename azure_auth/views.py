@@ -38,21 +38,27 @@ def validate_token(request):
     JWKS_URL = '{base_url}/discovery/v2.0/keys?p={policy}'.format(
         base_url=BASE_URL, policy=settings.POLICY)
 
-    id_token = request.GET['id_token']
-    jwt_header_json = base64url_decode(id_token.split('.')[0])
-    jwt_header = json.loads(jwt_header_json.decode('ascii'))
-    resp = _request(url=JWKS_URL, method="GET")
-    pub_key_val = ''
-    for key in resp.json()['keys']:
-        if key['kid'] == jwt_header['kid']:
-            pub_key = RSAAlgorithm.from_jwk(json.dumps(key))
-            pub_key_val = pub_key.public_bytes(
-                encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo)
-    try:
-        user_info = jwt_decode(
-            id_token, key=pub_key_val, algorithms=jwt_header['alg'], audience=settings.CLIENT_ID, leeway=0)
-        return HttpResponse('Login success, ' + json.dumps(user_info))
-    except (DecodeError, ExpiredSignature) as error:
-        return HttpResponse('failure, ' + str(error))
-    except Exception as e:
-        return HttpResponse('failure, ' + str(e))
+    if request.GET.get('error'):
+        if 'The user has cancelled entering self-asserted information.' in request.GET.get('error_description'):
+            return HttpResponseRedirect('/azure_auth/login/')
+        else:
+            return HttpResponse('failure, ' + str(reques.GET.get('error_description')))
+    else:
+        id_token = request.GET['id_token']
+        jwt_header_json = base64url_decode(id_token.split('.')[0])
+        jwt_header = json.loads(jwt_header_json.decode('ascii'))
+        resp = _request(url=JWKS_URL, method="GET")
+        pub_key_val = ''
+        for key in resp.json()['keys']:
+            if key['kid'] == jwt_header['kid']:
+                pub_key = RSAAlgorithm.from_jwk(json.dumps(key))
+                pub_key_val = pub_key.public_bytes(
+                    encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo)
+        try:
+            user_info = jwt_decode(
+                id_token, key=pub_key_val, algorithms=jwt_header['alg'], audience=settings.CLIENT_ID, leeway=0)
+            return HttpResponse('Login success, ' + json.dumps(user_info))
+        except (DecodeError, ExpiredSignature) as error:
+            return HttpResponse('failure, ' + str(error))
+        except Exception as e:
+            return HttpResponse('failure, ' + str(e))
