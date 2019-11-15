@@ -32,12 +32,6 @@ Environment Variables in KeyVault
 We store all environment variables in Azure KeyVault and reference them in code (see dev.py)
 KeyVault Ressource: learning2
 
-export AZURE_CLIENT_ID="2bf7f0fd-d2b4-4b34-83fd-59268adf07a9"
-
-export AZURE_CLIENT_SECRET="Request it from jay"
-
-export AZURE_TENANT_ID="78b03b78-f223-44e6-aa1d-7af413d79685"
-
 Install the relevant packages for Azure from requirements.txt
 If everything is set up correctly  
 credential = DefaultAzureCredential()  
@@ -62,9 +56,9 @@ python manage.py runserver
 ### Test
 Go to following url on browser to test running of this project
 http://127.0.0.1:8000/admin
-
-Then go to following url to see swagger-doc for api endpoints.
-http://127.0.0.1:8000/api/doc
+https://learningv1.azurewebsites.net/
+Then go to following url to see signin based on azure AD B2C.
+https://learningv1.azurewebsites.net/azure_auth/login
 
 ### Sentry Logging
 Documentation: https://docs.sentry.io/platforms/python/#integrating-the-sdk
