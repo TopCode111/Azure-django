@@ -1,0 +1,14 @@
+{
+    "level": "user",
+    "subject": "teacher_id",
+    "id": "fd0631c8-6bb4-4b53-aa49-202ebd9cd523",
+    "name": "kq / subj_detail",
+    "agg_l_strength": "problem_set1",
+    "agg_task_prgoress": "asdf",
+    "agg_l_signals": "0",
+    "agg_l_type": "number",
+    "agg_l_adaptability": "40",
+    "agg_l_rating": "1-6",
+    "agg_l_session":"asdf",
+    "relations": {"agg_kq":["id to which it is attached to"]}
+}

@@ -1,0 +1,20 @@
+{
+    "level": "problem_set",
+    "subject": "00000000-0000-0000-0000-000000000000",
+    "id": "88746993-8573-42db-8263-a3e9ec2a7819",
+    "name": "problem_set1",
+    "input_values": ["1,2,3"],
+    "input_type": "number",
+    "input_source": "",
+    "output_values": ["2,4,6"],
+    "output_variance": 0,
+    "output_type": "number",
+    "output_source": "",
+    "task_complexity": 40,
+    "time_complexity": "5m",
+    "l_type": ["20,60,20"],
+    "media_encoding": "asdf",
+    "key": 1,
+    "cid": "9b43f8f7-5993-46bd-aae3-5e77d8d4052a",
+    "relations": {"content_of":["d28b7c50-af5c-4f16-841d-adf3fb482383"]}
+}
