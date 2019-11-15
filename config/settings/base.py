@@ -135,7 +135,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static'),)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Django Rest Framework
@@ -187,9 +186,9 @@ SWAGGER_SETTINGS = {
 }
 
 
-TENANT_NAME = 'chanisample'
-POLICY = 'B2C_1_SignInSignUP'
+TENANT_NAME = 'gremloon'
+POLICY = 'B2C_1_SigninGoogle'
 
-TENANT_ID = 'a8d23264-48eb-41df-82fe-6e092cc6f92c'
-CLIENT_ID = 'e8a5fa5e-bdab-42e4-8fcb-06ae3164e30b'
-REDIRECT_URI = 'http://localhost:8000/azure_auth/complete'
+TENANT_ID = 'a9bcdf92-61d0-4fb6-8b4c-f269ec558b9c'
+CLIENT_ID = '1334612c-15ee-484e-a7e3-9b6376bcbbe3'
+REDIRECT_URI = 'https://www.gremloon.io/azure_auth/complete'
