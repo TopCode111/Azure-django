@@ -15,11 +15,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-credential = DefaultAzureCredential()
-client = SecretClient(vault_url="https://learning2.vault.azure.net/", credential=credential)
+# credential = DefaultAzureCredential()
+# client = SecretClient(vault_url="https://learning2.vault.azure.net/", credential=credential)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = client.get_secret('django-secret').value
+SECRET_KEY = '7u^#fn=fd&r4^qz#*-#ura%y%--opftk^hsc(&o0&7r-k_f2p&' # client.get_secret('django-secret').value
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'api_backend.apps.account',
     'api_backend.apps.apis',
+    'azure_auth'
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -183,3 +184,11 @@ SWAGGER_SETTINGS = {
         "drf_yasg.inspectors.CoreAPICompatInspector",
     ],
 }
+
+
+TENANT_NAME = 'chanisample'
+POLICY = 'B2C_1_SignInSignUP'
+
+TENANT_ID = 'a8d23264-48eb-41df-82fe-6e092cc6f92c'
+CLIENT_ID = 'e8a5fa5e-bdab-42e4-8fcb-06ae3164e30b'
+REDIRECT_URI = 'http://localhost:8000/azure_auth/complete'
