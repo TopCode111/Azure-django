@@ -7,17 +7,22 @@ import json
 from sentry_sdk import capture_exception, capture_message
 from django.conf import settings
 
+from api_backend.apps.apis.models import ScaffoldJsons
+
 class GremlinData():
     def __init__(self):
         self.edges = None
         self.vertices = None
         self.DICT_KEY = 'relations'
 
-    def attach_scaffold_to_graph(self, key_value_dict):
-        """Allows to bulk attach vertices and edges to graph. 
+    #TODO: every nested object, like a Dictionary, we just drop out of the collection, replace it by an ID
+    #and put it on NoSQL/SQL DB
+
+    def attach_scaffold_to_graph(self, key_value_dict, exclude_keys):
+        """Attaches Scaffold to graph (vertices and edges) - bulk
 
         Args:
-        path: of Json that contains instructions for vertices / edges
+        key_value_dict: list of dict that holds the the properties of vertices / edges
 
         Returns:
         List of successes/errors for insert
@@ -29,7 +34,7 @@ class GremlinData():
         col_list =  []
         data = self._prepare_edges_and_vertices_array(key_value_dict)
         if data is not None:
-            vertices = self._get_vertices_scaffold(data)
+            vertices = self._get_vertices_scaffold(data, exclude_keys)
             edges = self._get_edges_scaffold(data)
             #drop data into graph
             col_list.append(gremlin.send_to_graph(vertices))
@@ -40,10 +45,17 @@ class GremlinData():
         return col_list
 
     def attach_content_to_graph(self, key_value_dict, exclude_keys):
-        #get level of which we attach to +1
-        #need the id where we attach it to
-        #generate string from dict
-        #send to string
+        """Attaches content to graph (vertices and edges)
+
+        Args:
+        key_value_dict: dict that holds the the properties of vertices / edges
+
+        Returns:
+        List of successes/errors for insert
+
+        Raises:
+        TypeError: Some argument didnt properly get filled
+        """
         
         col_list =  []
         vertices = self._get_vertices_content(key_value_dict, exclude_keys)
@@ -54,6 +66,7 @@ class GremlinData():
 
         return col_list
 
+    #TODO: attach user to graph
     def attach_user_to_graph(self, key_value_dict=None):
         gremlin = Gremlin()
         pass
@@ -145,7 +158,7 @@ class GremlinData():
                     for v in value:
                         if Helpers.checkUUID(str(v)) is None:
                             #uuid_arr.update({key:id_dict[str(v)]})
-                            temp_arr.append(id_dict[str(v)])
+                            temp_arr.append(id_dict[v])
                         else:
                             temp_arr.append(v)
                             #uuid_arr.update(v)
@@ -159,8 +172,10 @@ class GremlinData():
             capture_exception(e)
 
 #TODO: build dynamic format instructions
-    def _get_vertices_scaffold(self, data):
+    def _get_vertices_scaffold(self, data, exclude_keys):
         """Builds gremlin instructions for scaffold vertices
+        All properties containing leading with "p_" are expected to be json dictionaries and get persisted into a json store (Postgres for now)
+        The inital content then gets replaced by a reference id
 
         Args:
         data: Structured list(dict) for extraction of vertices
@@ -174,13 +189,22 @@ class GremlinData():
         vertices_list = []
         try:
             for d in data:
-                val = ''
-                if 'final_node' in d:
-                    hid = Helpers.hash_values(d['level']+d['subject']+d['name']+str(d['final_node']))
-                    val = "g.addV('{}').property('subject','{}').property('id','{}').property('name','{}').property('hid','{}').property('final_node','{}')".format(d['level'], d['subject'], d['id'], d['name'], hid, d['final_node'])
-                else:
-                    hid = Helpers.hash_values(d['level']+d['subject']+d['name'])
-                    val = "g.addV('{}').property('subject','{}').property('id','{}').property('name','{}').property('hid','{}')".format(d['level'], d['subject'], d['id'], d['name'], hid) 
+                val =  "g.addV('{}')".format(d['level'])
+                for key, value in d.items():
+                
+                    if key in exclude_keys:
+                        continue
+
+                    if "p_" in key:
+                        d[key] = str(uuid.uuid4())
+                        try:
+                            ScaffoldJsons(d[key], d['sid'], json.dumps(value)).save()
+                        except Exception as e:
+                            capture_exception(e)
+
+                    if isinstance(value, list):
+                        value = ''.join(value)
+                    val += ".property('{}','{}')".format(key, value)
                 vertices_list.append(val)
         except Exception as e:
             capture_exception(e)
@@ -189,6 +213,8 @@ class GremlinData():
 
     def _get_vertices_content(self, data, exclude_keys):
             """Builds gremlin instructions for content vertices from dictionary by iterating and extracting key_values
+            All properties containing leading with "p_" are expected to be json dictionaries and get persisted into a json store (Postgres for now)
+            The inital content then gets replaced by a reference id
 
             Args:
             data: Structured dict for further extraction of edges / vertices
@@ -206,6 +232,14 @@ class GremlinData():
                 for key, value in data.items():
                     if key in exclude_keys:
                         continue
+
+                    if "p_" in key:
+                        d[key] = str(uuid.uuid4())
+                        try:
+                            ScaffoldJsons(d[key], data['sid'], json.dumps(value)).save()
+                        except Exception as e:
+                            capture_exception(e)
+
                     if isinstance(value, list):
                         value = ''.join(value)
                     val += ".property('{}','{}')".format(key, value)

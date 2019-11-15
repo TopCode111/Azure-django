@@ -1,40 +1,31 @@
 {
     "content": [
         {
-      "level": "l0",
-      "subject": "00000000-0000-0000-0000-000000000000",
-      "id": "0",
-      "name": "test1",
-      "final_node": 0,
-      "belongs_to": [1,2],
-      "relationship_name": "belongs_to"
-        },
-      {
-      "level": "l1",
-      "subject": "00000000-0000-0000-0000-000000000000",
-      "id": "1",
-      "name": "test2",
-      "final_node": 0,
-      "belongs_to": [2],
-      "relationship_name": "belongs_to"
+      "level": 0,
+      "sid": "00000000-0000-0000-0000-000000000000",
+      "id": 0,
+      "node_slug": "curriculum",
+      "name": "Curriculum",
+      "p_translation": {"ger":"Curriculum", "fra": "Curricülum"},
+      "description": "This is a Curriculum",
+      "kind": "scaffold",
+      "icon": "lalal.jpg",
+      "image": "lalal.jpg"
+
       },
       {
-        "level": "l2",
-        "subject": "00000000-0000-0000-0000-000000000000",
-        "id": "2",
-        "name": "test3",
-        "final_node": 0,
-        "belongs_to": [1],
-        "relationship_name": "belongs_to"
-        },
-        {
-          "level": "l3",
-          "subject": "00000000-0000-0000-0000-000000000000",
-          "id": "3",
-          "name": "test4",
-          "final_node": 1,
-          "belongs_to": [1,2,0],
-          "relationship_name": "belongs_to"
-          }    
+        "level": 1,
+        "sid": "00000000-0000-0000-0000-000000000000",
+        "id": 1,
+        "node_slug": "mathematics",
+        "name": "Mathematics",
+        "description": "This is a Curriculum",
+        "kind": "scaffold",
+        "icon": "lalal.jpg",
+        "image": "lalal.jpg",
+        "relations": {"subfield_of":[0]}
+    
+        } 
     ]
+    
 }

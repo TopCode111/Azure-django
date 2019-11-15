@@ -2,12 +2,6 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-import json
-from api_backend.apps.dbs import gremlin
-
-
-
-
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.dev')
@@ -25,11 +19,7 @@ def main():
 
 
 if __name__ == '__main__':
-    '''path = "static/misc_files/add_single_vertice_edge.json"
-    data = None
-    with open(path, "r") as read_file:
-        data = json.load(read_file)
-    g = gremlin.GremlinData()
-    g.attach_content_to_graph()
-    '''
     main()
+    
+    
+    

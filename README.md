@@ -8,7 +8,8 @@
 ### Install & Configure PostgreSQL - Please use Azure ressource "w1duw" 
 Please refer to this [link](https://www.postgresql.org/download/) to install PostgreSQL.
 
-Configure PostgreSQL:
+The project is configured for a remote postgres instance that utilizes Azure Key Vault to load the data from
+For local setup, follow the following steps and reconfigure the connection string:
 ```
 sudo su postgres
 psql
@@ -19,7 +20,7 @@ GRANT ALL PRIVILEGES ON DATABASE "db_name to my_username;
 
 ### Clone and Install Project
 ```
-git clone git@github.com:jaystary/learning_azure.git
+git clone git@github.com:gremloon/learning_azure.git
 cd learning_azure
 virtualenv .venv
 source .venv/bin/activate
@@ -38,7 +39,14 @@ export AZURE_CLIENT_SECRET="Request it from jay"
 export AZURE_TENANT_ID="78b03b78-f223-44e6-aa1d-7af413d79685"
 
 Install the relevant packages for Azure from requirements.txt
-If everything is set up correctly credential = DefaultAzureCredential() accesses the required credentials
+If everything is set up correctly  
+credential = DefaultAzureCredential()  
+accesses the required credentials
+
+You might also have to run this command:
+az keyvault set-policy --name learning2 --spn $AZURE_CLIENT_ID --secret-permissions backup delete get list
+
+Pointer? After i was logged in locally on Azure CLI in the wrong Azure account it wouldnt allow me to log in, keep this in minds
 
 ```
 

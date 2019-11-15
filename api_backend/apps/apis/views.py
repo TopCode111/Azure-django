@@ -6,6 +6,9 @@ from rest_framework import status
 from rest_framework import viewsets, views
 from rest_framework import permissions
 from sentry_sdk import capture_exception
+import json
+from api_backend.apps.dbs import graph
+from api_backend.apps.apis.logic import parse_tasks
 
 from .models import KqJsons, KqClone, SessionDetails, GDTemplateTracker
 from ..account.serializers import CurrentUserSerializer
@@ -24,11 +27,24 @@ class NotebooksViewSet(viewsets.ViewSet):
         """
         Put code for "POST: /notebooks" endpoint here.
         """
-        print(settings.SECRET_LIST['postgres-user'])
-        print(settings.SECRET_LIST['postgres-key'])
-        print(settings.SECRET_LIST['postgres-host'])
-        print(settings.SECRET_LIST['postgres-name'])
-        response = {'msg': "Please return your response for this endpoint."}
+        path = "static/notebooks/template.ipynb"
+        parse_tasks.generate_tasks(path, "00000")
+
+        '''
+        path = "static/misc_files/scaffold_extract.json"
+        data = None
+        excluded_keys = ["relations"]
+        try:
+            with open(path, "r") as read_file:
+                data = json.load(read_file)
+        except Exception as e:
+            capture_exception(e)
+        g = graph.GremlinData()
+        #g.attach_content_to_graph(data, excluded_keys)
+        '''
+        #return_value = g.attach_scaffold_to_graph(data, excluded_keys)
+        return_value = ''
+        response = {'msg': return_value}
         return Response(response, status=status.HTTP_201_CREATED)
     
     def retrieve(self, request, pk=None):

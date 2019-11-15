@@ -4,10 +4,6 @@ import requests
 from uuid import UUID
 from ast import literal_eval
 
-def read_csv(path):
-    with open(path, mode='r') as csv_file:
-        return csv.DictReader(csv_file)
-
 class Helpers:
     @staticmethod
     def hash_values(text):

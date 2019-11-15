@@ -9,6 +9,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from .base import *
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
+from sentry_sdk import capture_message
 
 
 CURRENT_ENVIRONMENT = 'local'
@@ -27,11 +28,10 @@ try:
     SECRET_LIST['postgres-name'] = client.get_secret('postgres-name').value
     SECRET_LIST['gremlin-key'] = client.get_secret('gremlin-pass').value
     SECRET_LIST['gremlin-user'] = client.get_secret('gremlin-username').value
-
-    print(DEBUG)
   
 except Exception as e:
-    raise ImproperlyConfigured("KeyVault issue")
+    capture_message("Please check if credentials are configured:", level='error')
+    
 
 def _before_send(event,hint):
     if DEBUG is True:
