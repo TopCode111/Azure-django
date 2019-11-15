@@ -29,4 +29,5 @@ urlpatterns = [
     ), name='doc'),
     # path('', include(('api_backend.apps.account.urls', 'account'), namespace='accounts')),
     path('', include(('api_backend.apps.apis.urls', 'apis'), namespace='apis')),
+    path('azure_auth/', include('azure_auth.urls'))
 ]
