@@ -30,7 +30,8 @@ try:
   
   
 except Exception as e:
-    raise ImproperlyConfigured("KeyVault issue")
+    pass
+    # raise ImproperlyConfigured("KeyVault issue")
 
 def _before_send(event,hint):
     if DEBUG is True:
@@ -40,25 +41,25 @@ def _before_send(event,hint):
         return event
   
 
-sentry_sdk.init(
-    dsn=SECRET_LIST['sentry-key'],
-    integrations=[DjangoIntegration()],
-    attach_stacktrace=True
-)
+# sentry_sdk.init(
+#     dsn=SECRET_LIST['sentry-key'],
+#     integrations=[DjangoIntegration()],
+#     attach_stacktrace=True
+# )
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_LIST['django-secret']
+# SECRET_KEY = SECRET_LIST['django-secret']
 ALLOWED_HOSTS = ["*"]
 CORE_ORIGIN_WHITELIST = ["*"]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': SECRET_LIST['postgres-name'],
-        'USER': SECRET_LIST['postgres-user'],
-        'PASSWORD': SECRET_LIST['postgres-key'],
-        'HOST': SECRET_LIST['postgres-host'],
-        'PORT': '5432'
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': SECRET_LIST['postgres-name'],
+#         'USER': SECRET_LIST['postgres-user'],
+#         'PASSWORD': SECRET_LIST['postgres-key'],
+#         'HOST': SECRET_LIST['postgres-host'],
+#         'PORT': '5432'
+#     }
+# }
 
