@@ -56,9 +56,9 @@ python manage.py runserver
 ### Test
 Go to following url on browser to test running of this project
 http://127.0.0.1:8000/admin
-https://learningv1.azurewebsites.net/
+
 Then go to following url to see signin based on azure AD B2C.
-https://learningv1.azurewebsites.net/azure_auth/login
+http://127.0.0.1:8000/azure_auth/login
 
 ### Sentry Logging
 Documentation: https://docs.sentry.io/platforms/python/#integrating-the-sdk
