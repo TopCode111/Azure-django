@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h1>Loading.....</h1>
+</body>
+<script type="text/javascript">
+	var url_hash = window.location.hash;
+	var qs = url_hash.replace('#', '?')
+	window.location = window.location.origin + '/azure_auth/validate_token/' + qs;
+</script>
+</html>
